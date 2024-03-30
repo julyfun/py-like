@@ -10,8 +10,7 @@ pub use types::type_of;
 mod test {
     #[test]
     fn it_works_too() {
-        use crate::{input, input_from, type_of};
-        use std::error::Error;
+        use crate::type_of;
         let a = 1.0;
         println!("{}", type_of(&a));
         println!("{}", type_of(&type_of(&a)));
