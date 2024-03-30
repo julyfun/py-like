@@ -52,28 +52,36 @@ where
 #[macro_export] // export to the root of the crate
 macro_rules! read {
     ($out:ident as $type:ty) => {
-        let mut inner = String::new();
-        std::io::stdin().read_line(&mut inner).expect("a String");
-        let $out = inner.trim().parse::<$type>().expect("Parsable");
+        let $out = {
+            let mut inner = String::new();
+            std::io::stdin().read_line(&mut inner).expect("a String");
+            inner.trim().parse::<$type>().expect("Parsable")
+        };
     };
 }
 
+#[macro_export]
 macro_rules! read_str {
     ($out:ident) => {
-        let mut inner = String::new();
-        std::io::stdin().read_line(&mut inner).expect("a String");
-        let $out = inner.trim();
+        let $out = {
+            let mut inner = String::new();
+            std::io::stdin().read_line(&mut inner).expect("a String");
+            inner.trim().to_string()
+        };
     };
 }
 
+#[macro_export]
 macro_rules! read_vec {
     ($out:ident as $type:ty) => {
-        let mut inner = String::new();
-        std::io::stdin().read_line(&mut inner).unwrap();
-        let $out = inner
-            .trim()
-            .split_whitespace()
-            .map(|s| s.parse::<$type>().unwrap())
-            .collect::<Vec<$type>>();
+        let $out = {
+            let mut inner = String::new();
+            std::io::stdin().read_line(&mut inner).unwrap();
+            inner
+                .trim()
+                .split_whitespace()
+                .map(|s| s.parse::<$type>().unwrap())
+                .collect::<Vec<$type>>()
+        };
     };
 }
