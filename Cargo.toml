@@ -1,7 +1,9 @@
 [package]
 name = "py-like"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
+authors = ["Julyfun"]
+include = ["src/", "LICENSE-*", "README.md", "CHANGELOG.md", "COPYRIGHT"]
 license = "MIT"
 description = """
 Genshin language should have its own type() and input() like python.
