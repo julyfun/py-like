@@ -5,6 +5,7 @@ use std::fmt::{Debug, Display};
 use std::io::{self, Write};
 use std::str::FromStr;
 
+/// Get user input, unfriendly to error handling.
 pub fn input() -> String {
     let mut inner = String::new();
     std::io::stdin()
@@ -13,12 +14,20 @@ pub fn input() -> String {
     inner
 }
 
-/// Yandros - users.rust-lang.org
-/// https://users.rust-lang.org/t/why-is-it-so-difficult-to-get-user-input-in-rust/27444/3
+/// Get user input with a prompt string.
 ///
-/// # Usage
+/// - ref: [Yandros - users.rust-lang.org](https://users.rust-lang.org/t/why-is-it-so-difficult-to-get-user-input-in-rust/27444/3)
+///
+/// # Examples
+///
+/// ```no_run
+/// use py_like::input_prompt;
+/// let s = input_prompt(&"Enter a string for s: ");
+/// println!("s: {s}");
+/// ```
 pub fn input_prompt(prompt: &'_ impl Display) -> String {
     print!("{}", prompt);
+    // 不加 flush 的话 prompt 必须带换行符才会直接输出
     std::io::stdout().flush().expect("Flush failed");
     let mut ret = String::new();
     std::io::stdin()
@@ -27,8 +36,9 @@ pub fn input_prompt(prompt: &'_ impl Display) -> String {
     ret
 }
 
-/// alice - users.rust-lang.org
-/// https://users.rust-lang.org/t/why-is-it-so-difficult-to-get-user-input-in-rust/27444/3
+/// Get user input and parse it to a specific type.
+///
+/// - ref: [alice - users.rust-lang.org](https://users.rust-lang.org/t/why-is-it-so-difficult-to-get-user-input-in-rust/27444/3)
 pub fn input_ok<T: FromStr>() -> Result<T, Box<dyn Error>>
 where
     <T as FromStr>::Err: Error + 'static,
@@ -39,6 +49,7 @@ where
     Ok(input.trim().parse()?)
 }
 
+/// Get user input and parse it to a specific type, unwrap the result directly.
 pub fn input_from<T: FromStr>() -> T
 where
     <T as FromStr>::Err: Debug + 'static,
@@ -50,8 +61,7 @@ where
     input.trim().parse().unwrap()
 }
 
-/// coder3101 - stackoverflow.com
-/// https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0
+/// - ref: [coder3101 - stackoverflow.com](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
 #[macro_export] // export to the root of the crate
 macro_rules! read {
     ($out:ident as $type:ty) => {
