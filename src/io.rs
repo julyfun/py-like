@@ -2,7 +2,7 @@
 
 use std::error::Error;
 use std::fmt::{Debug, Display};
-use std::io;
+use std::io::{self, Write};
 use std::str::FromStr;
 
 pub fn input() -> String {
@@ -15,8 +15,11 @@ pub fn input() -> String {
 
 /// Yandros - users.rust-lang.org
 /// https://users.rust-lang.org/t/why-is-it-so-difficult-to-get-user-input-in-rust/27444/3
+///
+/// # Usage
 pub fn input_prompt(prompt: &'_ impl Display) -> String {
     print!("{}", prompt);
+    std::io::stdout().flush().expect("Flush failed");
     let mut ret = String::new();
     std::io::stdin()
         .read_line(&mut ret)
