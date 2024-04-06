@@ -10,7 +10,7 @@ pub fn input() -> String {
     let mut inner = String::new();
     std::io::stdin()
         .read_line(&mut inner)
-        .expect("Failed to read from stdin");
+        .expect("failed to read from stdin");
     inner
 }
 
@@ -32,7 +32,7 @@ pub fn input_prompt(prompt: &'_ impl Display) -> String {
     let mut ret = String::new();
     std::io::stdin()
         .read_line(&mut ret)
-        .expect("Failed to read from stdin");
+        .expect("failed to read from stdin");
     ret
 }
 
@@ -57,8 +57,8 @@ where
     let mut input = String::new();
     io::stdin()
         .read_line(&mut input)
-        .expect("Failed to read from stdin");
-    input.trim().parse().unwrap()
+        .expect("failed to read from stdin");
+    input.trim().parse().expect("failed to parse")
 }
 
 /// - ref: [coder3101 - stackoverflow.com](https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
@@ -68,7 +68,7 @@ macro_rules! read {
         let $out = {
             let mut inner = String::new();
             std::io::stdin().read_line(&mut inner).expect("a String");
-            inner.trim().parse::<$type>().expect("Parsable")
+            inner.trim().parse::<$type>().expect("parsable")
         };
     };
 }
@@ -89,11 +89,16 @@ macro_rules! read_vec {
     ($out:ident as $type:ty) => {
         let $out = {
             let mut inner = String::new();
-            std::io::stdin().read_line(&mut inner).unwrap();
+            std::io::stdin()
+                .read_line(&mut inner)
+                .expect("failed to read from stdin");
             inner
                 .trim()
                 .split_whitespace()
-                .map(|s| s.parse::<$type>().unwrap())
+                .map(|s| {
+                    s.parse::<$type>()
+                        .unwrap_or_else(|_| panic!("failed to parse into {}", stringify!($type)))
+                })
                 .collect::<Vec<$type>>()
         };
     };
